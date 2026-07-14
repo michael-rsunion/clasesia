@@ -178,18 +178,24 @@ export function ContextWindow({ onDone }: { onDone?: () => void }) {
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
-            className="mt-3 rounded-xl border border-dashed border-line bg-muted/40 p-3"
+            className="mt-3 rounded-xl border border-dashed border-line-strong bg-muted/30 p-3"
           >
-            <div className="mb-1.5 text-[11px] text-ink-mute">
+            <div className="mb-2 flex items-center gap-1.5 text-[11px] font-semibold text-ink-mute">
+              <span className="grid size-4 place-items-center rounded-full bg-ink text-[9px] font-bold text-background">
+                ✕
+              </span>
               Se salió de la ventana — lo olvidé:
             </div>
             <div className="flex flex-wrap gap-1.5">
               {dropped.map((m) => (
                 <span
                   key={m.text}
-                  className="rounded-md bg-muted px-2 py-1 text-xs text-ink-faint line-through"
+                  className="flex items-center gap-1.5 rounded-md border border-line-strong bg-surface px-2 py-1 text-xs"
                 >
-                  {m.text}
+                  <span className="text-ink-mute">✕</span>
+                  <span className="text-ink-soft line-through decoration-ink-mute">
+                    {m.text}
+                  </span>
                 </span>
               ))}
             </div>
