@@ -55,6 +55,8 @@ export function ChatCourse({ onRestart }: { onRestart: () => void }) {
   const keyRef = useRef(1);
   const advancedRef = useRef<Set<number>>(new Set());
   const bottomRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const consumeNext = useCallback(() => {
     if (cursorRef.current >= SCRIPT.length) return;
@@ -98,9 +100,28 @@ export function ChatCourse({ onRestart }: { onRestart: () => void }) {
     [],
   );
 
+  // Al aparecer un mensaje nuevo (o cambiar de fase), bajamos al fondo.
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [items, stage]);
+
+  // Mientras un mensaje "se escribe" (máquina de escribir) crece de alto.
+  // Mantenemos el chat pegado al fondo para que la última línea no quede
+  // tapada por el composer — pero solo si ya estás abajo (si subiste a leer,
+  // no te arrastramos).
+  useEffect(() => {
+    const scroller = scrollRef.current;
+    const content = contentRef.current;
+    if (!scroller || !content) return;
+    const ro = new ResizeObserver(() => {
+      const nearBottom =
+        scroller.scrollHeight - scroller.scrollTop - scroller.clientHeight <
+        160;
+      if (nearBottom) scroller.scrollTop = scroller.scrollHeight;
+    });
+    ro.observe(content);
+    return () => ro.disconnect();
+  }, []);
 
   // Atajo de desarrollo: ?jump=<módulo> muestra ese beat aislado.
   useEffect(() => {
@@ -145,8 +166,14 @@ export function ChatCourse({ onRestart }: { onRestart: () => void }) {
       <div className="flex min-w-0 flex-1 flex-col overflow-hidden rounded-3xl border border-line bg-card/60 shadow-[0_20px_60px_-30px_rgba(0,0,0,0.5)] backdrop-blur-xl">
         <ChatHeader currentIndex={currentIndex} started={stage === "running"} />
 
-        <div className="scroll-fade relative flex-1 overflow-y-auto px-3 py-6 sm:px-6">
-          <div className="mx-auto flex min-h-full max-w-2xl flex-col gap-5">
+        <div
+          ref={scrollRef}
+          className="scroll-fade relative flex-1 overflow-y-auto px-3 py-6 sm:px-6"
+        >
+          <div
+            ref={contentRef}
+            className="mx-auto flex min-h-full max-w-2xl flex-col gap-5 pb-4"
+          >
             {stage === "welcome" ? (
               <Welcome />
             ) : (
