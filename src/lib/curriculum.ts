@@ -184,10 +184,8 @@ export const SCRIPT: Beat[] = [
   { module: "aprender", type: "say", text: "Una idea importante antes de nada: yo no “sé” cosas como las sabe una persona. Y ojo, tampoco “leo” como lees tú." },
   { module: "aprender", type: "say", text: "Me construyeron a partir de una cantidad enorme de texto público que la gente escribió y publicó en internet: libros, artículos, páginas web, enciclopedias, foros, documentación…" },
   { module: "aprender", type: "say", text: "Con “leer” me refiero a algo distinto a entender: analicé todo ese texto para medir qué palabras y frases tienden a aparecer juntas. De ahí saqué patrones. No memoricé las páginas ni las guardo." },
-  { module: "aprender", type: "say", text: "Y con esos patrones, mi habilidad principal es una sola: predecir qué palabra tiene más sentido a continuación. Antes de que te enseñe cómo lo hago yo, compruébalo en ti: ¿qué palabra pondrías?" },
-  { module: "aprender", type: "predict", sentence: "Después de correr, tenía muchísima", options: ["sed", "mesa", "azul"], answer: 0 },
-  { module: "aprender", type: "say", text: "Fíjate en lo que acaba de pasar: entre las opciones, una encajaba mucho mejor que las demás. Quedarse con la más probable es exactamente lo que hago yo, pero calculado sobre esos patrones y a gran velocidad. Más adelante te enseño cómo, con números." },
-  { module: "aprender", type: "card", icon: "🧠", title: "Qué es un modelo", body: "Un modelo de IA es un sistema que aprendió patrones del lenguaje a partir de todo ese texto de internet. **Entrenarlo** = mostrarle los ejemplos hasta que predice bien. No copia ni guarda las páginas: aprende cómo encaja el lenguaje para generar texto nuevo." },
+  { module: "aprender", type: "say", text: "Y con esos patrones, todo lo que hago se reduce a una sola cosa: predecir qué palabra viene después. Suena simple, pero es la clave de todo — y te lo voy a demostrar en un momento, en cuanto empieces a hablarme de verdad." },
+  { module: "aprender", type: "card", icon: "🧠", title: "Cómo aprendí", body: "Aprendí de todo ese texto a base de **patrones** —a eso se le llama **entrenar**—. En el fondo, entrenarme fue enseñarme a **predecir la siguiente palabra** una y otra vez sobre muchísimo texto. Por eso no “sé” datos como un libro: adivino lo que mejor encaja según lo que aprendí." },
   { module: "aprender", type: "continue" },
 
   /* ===== ACTO 2 · Escribes tú ==================================== */
@@ -199,11 +197,11 @@ export const SCRIPT: Beat[] = [
   { module: "token", type: "say", text: "Ahora un detalle que poca gente conoce: yo no leo tu frase igual que tú. No proceso letras ni palabras completas." },
   { module: "token", type: "say", text: "Primero divido el texto en piezas pequeñas llamadas tokens. Mira cómo quedó dividido lo que escribiste." },
   { module: "token", type: "tokens", fallback: "Hola, quiero aprender inteligencia artificial" },
-  { module: "token", type: "card", icon: "🧩", title: "Qué es un token", body: "Un **token** es un fragmento de texto: puede ser una palabra corta, un trozo de una palabra larga o un signo. Yo cuento y proceso en tokens, no en palabras. Una regla útil: **un token equivale más o menos a 4 caracteres**. Importa porque el coste, la velocidad y mis límites se miden así." },
+  { module: "token", type: "card", icon: "🧩", title: "Qué es un token", body: "Un **token** es un fragmento de texto: puede ser una palabra corta, un trozo de una palabra larga o un signo. Yo cuento y proceso en tokens, no en palabras. Una regla útil: **un token son unos 3 o 4 caracteres**. Importa porque el coste, la velocidad y mis límites se miden así." },
   { module: "token", type: "continue" },
 
   /* ===== ACTO 3 · Te responde ==================================== */
-  { module: "generar", type: "say", text: "Llegó el momento de responderte. Antes de escribir de corrido, fíjate en lo que hago en cada hueco: miro varias palabras posibles, calculo su probabilidad y elijo la mejor. Pruébalo tú 👇" },
+  { module: "generar", type: "say", text: "Llegó el momento de responderte — y de cumplir lo que te prometí. ¿Recuerdas que te dije que todo se reduce a predecir la siguiente palabra? Aquí lo tienes: en cada hueco comparo varias palabras posibles, calculo su probabilidad y elijo la mejor. Pruébalo tú 👇" },
   { module: "generar", type: "predictor" },
   { module: "generar", type: "say", text: "¿Lo ves? En cada paso comparo las opciones y me quedo con la más probable. Y lo hago tan rápido que parece que escribo de corrido:" },
   { module: "generar", type: "generate", text: "Estoy escribiendo esto un token cada vez. No tenía la frase preparada de antemano: en cada paso calculo cuál es el token más probable que sigue, lo añado y repito el proceso. Por eso me ves escribir de forma progresiva." },
@@ -212,15 +210,15 @@ export const SCRIPT: Beat[] = [
 
   { module: "contexto", type: "say", text: "Algo clave para usarme bien, y que casi nadie entiende: yo no tengo memoria. Te sorprenderá, porque parece que te recuerdo dentro de la charla." },
   { module: "contexto", type: "say", text: "El truco es este: cada vez que me escribes, quien te responde es una versión mía recién encendida. Antes de contestar, relee TODA la conversación desde el principio —lo que escribiste tú y lo que respondí yo— y con eso te responde. Al terminar, lo olvida." },
-  { module: "contexto", type: "say", text: "A todo ese texto que puedo releer de una vez lo llamamos contexto, y tiene un tamaño máximo, medido en tokens. Cuando la charla lo supera, lo más antiguo se cae para dejar sitio… y eso sí se me olvida. Envía tú los mensajes y míralo 👇" },
+  { module: "contexto", type: "say", text: "A todo ese texto que puedo releer de una vez lo llamamos contexto, y tiene un tamaño máximo, medido en tokens. Cuanto más largo se hace, más me cuesta acordarme bien de todo; y cuando la charla supera ese tamaño, lo más antiguo se cae para dejar sitio… y eso sí se me olvida. Envía tú los mensajes y míralo 👇" },
   { module: "contexto", type: "context" },
-  { module: "contexto", type: "card", icon: "🪟", title: "La ventana de contexto", body: "El **contexto** es todo el texto de la conversación que releo cada vez que me hablas; se mide en tokens y **cada modelo tiene un tamaño distinto**. No es memoria permanente: si la charla supera ese tamaño, lo más antiguo desaparece y lo olvido, y **entre un chat y otro empiezo de cero**. Consejo: si un dato importa, **repítelo o ponlo cerca de tu pregunta**." },
+  { module: "contexto", type: "card", icon: "🪟", title: "La ventana de contexto", body: "El **contexto** es mi **memoria de trabajo**: todo el texto de la conversación que releo cada vez que me hablas. Se mide en tokens y cada modelo tiene el suyo (desde unos 200 mil hasta un millón de piezas). No es memoria permanente: si la charla supera ese tamaño, lo más antiguo desaparece y lo olvido, y **entre un chat y otro empiezo de cero**. Consejo: si un dato importa, **repítelo o ponlo cerca de tu pregunta**." },
   { module: "contexto", type: "continue" },
 
   { module: "errores", type: "say", text: "Y ahora lo más importante que alguien puede decirte sobre la IA: a veces me equivoco con total seguridad. A ese error se le llama alucinación. Compruébalo tú mismo 👇" },
   { module: "errores", type: "hallucination" },
-  { module: "errores", type: "card", icon: "⚠️", title: "Las alucinaciones", body: "Como genero lo más probable, en ocasiones produzco algo que suena correcto pero es falso: una fecha, una cita o un dato inventado. No lo hago a propósito; simplemente no distingo cuándo acierto. Por eso conviene **verificar siempre** lo importante, sobre todo datos, cifras y fuentes." },
-  { module: "errores", type: "say", text: "Un apunte extra: existe un ajuste llamado temperatura. Cuando es baja, respondo de forma más precisa y previsible; cuando es alta, soy más creativa y variada, pero también más propensa a inventar." },
+  { module: "errores", type: "card", icon: "⚠️", title: "Las alucinaciones", body: "Como genero lo más probable, a veces produzco algo que suena correcto pero es falso: una fecha, una cita o un dato inventado. Me pasa sobre todo cuando el dato no lo tengo delante (no está en mi **memoria de trabajo**, como viste en el contexto). No lo hago a propósito; simplemente no distingo cuándo acierto. Por eso conviene **verificar siempre** lo importante: datos, cifras y fuentes." },
+  { module: "errores", type: "say", text: "Un apunte extra: existe un ajuste llamado temperatura, que regula cuánto arriesgo al elegir palabras. Baja: me ciño a lo más probable, más precisa y previsible. Alta: exploro palabras menos comunes, más creativa y variada, pero menos predecible. Para datos importantes, mejor baja." },
   { module: "errores", type: "continue" },
 
   /* ===== ACTO 4 · Lo usas de verdad ============================== */
@@ -239,7 +237,7 @@ export const SCRIPT: Beat[] = [
   { module: "multimodal", type: "card", icon: "🎨", title: "Qué significa multimodal", body: "**Multimodal** significa trabajar con varios tipos de contenido, no solo texto. Claude puede leer un documento y también **entender una imagen** que le envíes (una captura, un gráfico, una foto). Y a su alrededor existen modelos que **crean** imágenes, voces y vídeo desde una simple indicación de texto." },
   { module: "multimodal", type: "continue" },
 
-  { module: "modelo", type: "say", text: "Detalle práctico para tu equipo: no hay un único “Claude”, hay una familia, y eliges según la tarea. Aquí están los tres que usarás." },
+  { module: "modelo", type: "say", text: "¿Recuerdas cuando te conté cómo aprendí? A una IA entrenada así se le llama un modelo. Y no hay un único “Claude”: hay una familia de modelos, y eliges según la tarea. Aquí están los tres que usarás." },
   { module: "modelo", type: "models" },
   { module: "modelo", type: "card", icon: "🧭", title: "Cómo elegir", body: "Regla sencilla: empieza por **Sonnet 5** para casi todo. Sube a **Opus 4.8** cuando la tarea sea especialmente difícil o importante, y baja a **Haiku 4.5** cuando necesites rapidez y volumen en cosas simples. Los tres entienden texto e imágenes." },
   { module: "modelo", type: "continue" },
@@ -249,7 +247,7 @@ export const SCRIPT: Beat[] = [
   { module: "mcp", type: "mcp" },
   { module: "mcp", type: "say", text: "¿Y cómo se le añaden esas herramientas a Claude? No hace falta programar. En Claude tienes una sección de conectores: activas el que necesites con un clic y, desde ese momento, puedo usarlo. Pruébalo tú 👇" },
   { module: "mcp", type: "connectors" },
-  { module: "mcp", type: "card", icon: "🔌", title: "Qué es un MCP y cómo se conecta", body: "**MCP** (*Model Context Protocol*) es un estándar abierto creado por **Anthropic** para conectarme con herramientas y datos reales. En el día a día se usan como **conectores**: los oficiales —Calendario, Google Drive, Gmail, internet, bases de datos— se activan con un clic en **Ajustes → Conectores** de Claude; y si tu equipo tiene una herramienta propia, se añade pegando la dirección de su **servidor MCP**. Una vez conectado, dejo de solo describir las cosas y empiezo a hacerlas: leer un documento, mirar tu agenda o consultar tus datos." },
+  { module: "mcp", type: "card", icon: "🔌", title: "Qué es un MCP y cómo se conecta", body: "Piénsalo como un **puerto USB-C para la IA**: un enchufe estándar para conectarme a herramientas y datos. Ese estándar se llama **MCP** (*Model Context Protocol*) y lo creó **Anthropic**. En el día a día se usan como **conectores**: los oficiales —Calendario, Google Drive, Gmail, internet, bases de datos— se activan con un clic en **Ajustes → Conectores** de Claude; y si tu equipo tiene una herramienta propia, se añade pegando la dirección de su **servidor MCP**. Una vez conectado, dejo de solo describir las cosas y empiezo a hacerlas: leer un documento, mirar tu agenda o consultar tus datos." },
   { module: "mcp", type: "say", text: "Esto es lo que más está cambiando el trabajo ahora mismo: conectado a tus herramientas, ya no solo te aconsejo — actúo con tus datos reales, sin que tú copies y pegues." },
   { module: "mcp", type: "continue" },
 
