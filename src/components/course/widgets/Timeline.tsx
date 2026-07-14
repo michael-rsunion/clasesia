@@ -87,10 +87,10 @@ export function Timeline({ onDone }: { onDone?: () => void }) {
   const remaining = POINTS.length - visited.size;
 
   return (
-    <div className="rounded-2xl border border-line bg-surface/60 p-4 sm:p-5">
+    <div className="rounded-2xl border border-line bg-surface/60 p-3 sm:p-5">
       {/* raíl */}
-      <div className="relative flex items-center justify-between gap-1">
-        <div className="absolute left-0 right-0 top-[18px] h-px bg-line-strong" />
+      <div className="relative flex items-center justify-between gap-0.5 sm:gap-1">
+        <div className="absolute left-0 right-0 top-3.5 h-px bg-line-strong sm:top-[18px]" />
         {POINTS.map((p, i) => {
           const seen = visited.has(i);
           const isActive = i === active;
@@ -98,11 +98,11 @@ export function Timeline({ onDone }: { onDone?: () => void }) {
             <button
               key={p.year}
               onClick={() => open(i)}
-              className="group relative z-10 flex flex-col items-center gap-1.5"
+              className="group relative z-10 flex flex-col items-center gap-1 sm:gap-1.5"
               aria-label={`${p.year}: ${p.title}${seen ? " (visto)" : " (pendiente)"}`}
             >
               <span
-                className={`relative grid size-9 place-items-center rounded-full border text-sm transition-all ${
+                className={`relative grid size-7 place-items-center rounded-full border text-xs transition-all sm:size-9 sm:text-sm ${
                   isActive
                     ? "scale-110 border-ink bg-ink text-background"
                     : seen
@@ -119,7 +119,7 @@ export function Timeline({ onDone }: { onDone?: () => void }) {
                 )}
               </span>
               <span
-                className={`font-mono text-[11px] transition-colors ${
+                className={`font-mono text-[9px] transition-colors sm:text-[11px] ${
                   isActive ? "text-ink" : seen ? "text-ink-mute" : "text-ink-faint"
                 }`}
               >
