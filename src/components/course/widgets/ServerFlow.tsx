@@ -55,18 +55,18 @@ export function ServerFlow({ onDone }: { onDone?: () => void }) {
   const forgetting = phase === "forget";
 
   const caption = done
-    ? "Aunque parezca que te recuerdo, en realidad releo todo cada vez. Eso que viaja y releo es el contexto."
+    ? "Por eso releo todo el contexto en cada mensaje, aunque parezca que te recuerdo."
     : phase === "up"
-      ? "Tu mensaje y TODA la conversación viajan al servidor…"
+      ? "Todo el contexto (nuestra conversación) viaja al servidor…"
       : phase === "think"
-        ? "Aquí me ejecuto: leo todo el contexto de una vez y genero la respuesta."
+        ? "Me ejecuto: leo el contexto entero de una vez y genero la respuesta."
         : phase === "down"
           ? "La respuesta viaja de vuelta a tu pantalla."
           : phase === "forget"
-            ? "El servidor no guarda nada: al terminar, me apago y lo olvido todo."
+            ? "El servidor no guarda nada: al terminar, se apaga y lo olvida."
             : turn === 0
-              ? "Yo no vivo en tu dispositivo: me ejecuto en un servidor. Envía y míralo."
-              : "Otra vez: fíjate que vuelve a viajar TODA la conversación (cada vez más larga).";
+              ? "Pulsa para enviarme tu mensaje y mira qué es lo que viaja."
+              : "Fíjate: ahora viaja MÁS contexto — toda la charla otra vez, ya más larga.";
 
   return (
     <div className="rounded-2xl border border-line bg-surface/60 p-4 sm:p-5">
@@ -80,16 +80,14 @@ export function ServerFlow({ onDone }: { onDone?: () => void }) {
           <div className="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 border-t border-dashed border-line-strong" />
           <AnimatePresence>
             {phase === "up" && (
-              <Packet key="up" from="4%" to="82%" label="📦" />
+              <ContextPacket key={`up${turn}`} from="2%" to="78%" lines={turn === 0 ? 3 : 6} />
             )}
-            {phase === "down" && (
-              <Packet key="down" from="82%" to="4%" label="💬" />
-            )}
+            {phase === "down" && <ReplyPacket key="down" from="78%" to="2%" />}
           </AnimatePresence>
           {/* etiqueta de dirección */}
-          <div className="absolute inset-x-0 top-0 text-center text-[10px] text-ink-faint">
+          <div className="absolute inset-x-0 -top-0.5 text-center text-[10px] text-ink-faint">
             {phase === "up"
-              ? "mensaje + contexto →"
+              ? "todo el contexto →"
               : phase === "down"
                 ? "← respuesta"
                 : ""}
@@ -197,14 +195,15 @@ function Node({
   );
 }
 
-function Packet({
+/** Paquete de ida: la conversación completa (líneas apiladas que crecen). */
+function ContextPacket({
   from,
   to,
-  label,
+  lines,
 }: {
   from: string;
   to: string;
-  label: string;
+  lines: number;
 }) {
   return (
     <motion.div
@@ -212,9 +211,30 @@ function Packet({
       animate={{ left: to, opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.7 }}
       transition={{ duration: 1.1, ease: "easeInOut" }}
-      className="absolute top-1/2 z-10 grid size-8 -translate-y-1/2 place-items-center rounded-full border border-ink bg-background text-sm shadow-sm"
+      className="absolute top-1/2 z-10 flex -translate-y-1/2 flex-col gap-[3px] rounded-md border border-ink bg-background px-2 py-1.5 shadow-sm"
     >
-      {label}
+      {Array.from({ length: lines }).map((_, i) => (
+        <span
+          key={i}
+          className={`h-[3px] rounded-full ${i % 2 === 0 ? "bg-ink" : "bg-ink-mute"}`}
+          style={{ width: 18 - (i % 3) * 3 }}
+        />
+      ))}
+    </motion.div>
+  );
+}
+
+/** Paquete de vuelta: una sola respuesta. */
+function ReplyPacket({ from, to }: { from: string; to: string }) {
+  return (
+    <motion.div
+      initial={{ left: from, opacity: 0, scale: 0.7 }}
+      animate={{ left: to, opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.7 }}
+      transition={{ duration: 1.1, ease: "easeInOut" }}
+      className="absolute top-1/2 z-10 grid size-7 -translate-y-1/2 place-items-center rounded-full border border-ink bg-ink text-xs text-background shadow-sm"
+    >
+      💬
     </motion.div>
   );
 }
