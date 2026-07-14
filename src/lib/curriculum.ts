@@ -134,6 +134,11 @@ export interface McpBeat extends Base {
   type: "mcp";
 }
 
+/** Panel de conectores: cómo se le añaden herramientas a Claude. */
+export interface ConnectorsBeat extends Base {
+  type: "connectors";
+}
+
 export interface UsesBeat extends Base {
   type: "uses";
 }
@@ -159,6 +164,7 @@ export type Beat =
   | MultimodalBeat
   | ModelsBeat
   | McpBeat
+  | ConnectorsBeat
   | UsesBeat
   | FinishBeat;
 
@@ -180,7 +186,7 @@ export const SCRIPT: Beat[] = [
   { module: "aprender", type: "say", text: "Con “leer” me refiero a algo distinto a entender: analicé todo ese texto para medir qué palabras y frases tienden a aparecer juntas. De ahí saqué patrones. No memoricé las páginas ni las guardo." },
   { module: "aprender", type: "say", text: "Y con esos patrones, mi habilidad principal es una sola: predecir qué palabra tiene más sentido a continuación. Antes de que te enseñe cómo lo hago yo, compruébalo en ti: ¿qué palabra pondrías?" },
   { module: "aprender", type: "predict", sentence: "Después de correr, tenía muchísima", options: ["sed", "mesa", "azul"], answer: 0 },
-  { module: "aprender", type: "say", text: "Lo hiciste sin pensar: elegiste la palabra más probable según todo lo que has leído y oído en tu vida. Yo hago exactamente lo mismo, pero calculado sobre esos patrones y a gran velocidad. Más adelante te enseñaré cómo, con números." },
+  { module: "aprender", type: "say", text: "Fíjate en lo que acaba de pasar: entre las opciones, una encajaba mucho mejor que las demás. Quedarse con la más probable es exactamente lo que hago yo, pero calculado sobre esos patrones y a gran velocidad. Más adelante te enseño cómo, con números." },
   { module: "aprender", type: "card", icon: "🧠", title: "Qué es un modelo", body: "Un modelo de IA es un sistema que aprendió patrones del lenguaje a partir de todo ese texto de internet. **Entrenarlo** = mostrarle los ejemplos hasta que predice bien. No copia ni guarda las páginas: aprende cómo encaja el lenguaje para generar texto nuevo." },
   { module: "aprender", type: "continue" },
 
@@ -241,7 +247,10 @@ export const SCRIPT: Beat[] = [
   { module: "mcp", type: "say", text: "Última pieza, y es la que más está cambiando las cosas ahora mismo. Por muy capaz que sea, yo sola solo puedo generar contenido. No puedo mirar tu agenda, ni buscar en internet, ni abrir tus archivos." },
   { module: "mcp", type: "say", text: "…a menos que me des herramientas. Eso se consigue con algo llamado MCP. Observa la diferencia." },
   { module: "mcp", type: "mcp" },
-  { module: "mcp", type: "card", icon: "🔌", title: "Qué es un MCP", body: "**MCP** (del inglés *Model Context Protocol*) es un estándar abierto creado por **Anthropic**, los creadores de Claude, para conectarme con herramientas y datos reales: un calendario, una base de datos, internet o tus aplicaciones. Con MCP dejo de solo describir las cosas y empiezo a hacerlas de verdad." },
+  { module: "mcp", type: "say", text: "¿Y cómo se le añaden esas herramientas a Claude? No hace falta programar. En Claude tienes una sección de conectores: activas el que necesites con un clic y, desde ese momento, puedo usarlo. Pruébalo tú 👇" },
+  { module: "mcp", type: "connectors" },
+  { module: "mcp", type: "card", icon: "🔌", title: "Qué es un MCP y cómo se conecta", body: "**MCP** (*Model Context Protocol*) es un estándar abierto creado por **Anthropic** para conectarme con herramientas y datos reales. En el día a día se usan como **conectores**: los oficiales —Calendario, Google Drive, Gmail, internet, bases de datos— se activan con un clic en **Ajustes → Conectores** de Claude; y si tu equipo tiene una herramienta propia, se añade pegando la dirección de su **servidor MCP**. Una vez conectado, dejo de solo describir las cosas y empiezo a hacerlas: leer un documento, mirar tu agenda o consultar tus datos." },
+  { module: "mcp", type: "say", text: "Esto es lo que más está cambiando el trabajo ahora mismo: conectado a tus herramientas, ya no solo te aconsejo — actúo con tus datos reales, sin que tú copies y pegues." },
   { module: "mcp", type: "continue" },
 
   { module: "usos", type: "say", text: "Con todo esto, ¿para qué me conviene usarte de verdad? Aquí tienes ejemplos concretos que puedes aprovechar desde hoy." },

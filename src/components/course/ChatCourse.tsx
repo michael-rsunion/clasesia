@@ -31,6 +31,7 @@ import { Compare } from "./widgets/Compare";
 import { Multimodal } from "./widgets/Multimodal";
 import { Models } from "./widgets/Models";
 import { Mcp } from "./widgets/Mcp";
+import { Connectors } from "./widgets/Connectors";
 import { Uses } from "./widgets/Uses";
 
 interface Item {
@@ -265,6 +266,8 @@ function BeatView({
       return <Widget><Models onDone={done} /></Widget>;
     case "mcp":
       return <Widget><Mcp onDone={done} /></Widget>;
+    case "connectors":
+      return <Widget><Connectors onDone={done} /></Widget>;
     case "uses":
       return <Widget><Uses onDone={done} /></Widget>;
     case "finish":
@@ -508,6 +511,7 @@ function Composer({
         return "timeline";
       case "context":
       case "hallucination":
+      case "connectors":
         return "interact";
       case "finish":
         return "finish";

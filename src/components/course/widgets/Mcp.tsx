@@ -67,10 +67,10 @@ export function Mcp({ onDone }: { onDone?: () => void }) {
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="mb-3 flex items-center gap-2 rounded-xl border border-line bg-muted/40 p-3 text-sm"
+            className="mb-3 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-xl border border-line bg-muted/40 p-3 text-sm"
           >
             <span className="text-ink">🔌</span>
-            <span className="text-ink-soft">Conectando MCP</span>
+            <span className="text-ink-soft">Conectando</span>
             <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs text-ink">
               calendario
             </code>
