@@ -88,73 +88,139 @@ export function Timeline({ onDone }: { onDone?: () => void }) {
 
   return (
     <div className="rounded-2xl border border-line bg-surface/60 p-3 sm:p-5">
-      {/* raíl */}
-      <div className="relative flex items-center justify-between gap-0.5 sm:gap-1">
-        <div className="absolute left-0 right-0 top-3.5 h-px bg-line-strong sm:top-[18px]" />
+      {/* ---------- MÓVIL: lista vertical (acordeón) ---------- */}
+      <ul className="flex flex-col gap-1 sm:hidden">
         {POINTS.map((p, i) => {
           const seen = visited.has(i);
           const isActive = i === active;
           return (
-            <button
-              key={p.year}
-              onClick={() => open(i)}
-              className="group relative z-10 flex flex-col items-center gap-1 sm:gap-1.5"
-              aria-label={`${p.year}: ${p.title}${seen ? " (visto)" : " (pendiente)"}`}
-            >
-              <span
-                className={`relative grid size-7 place-items-center rounded-full border text-xs transition-all sm:size-9 sm:text-sm ${
-                  isActive
-                    ? "scale-110 border-ink bg-ink text-background"
-                    : seen
-                      ? "border-ink bg-surface text-ink"
-                      : "border-dashed border-line-strong bg-transparent text-ink-faint opacity-70 group-hover:opacity-100"
+            <li key={p.year}>
+              <button
+                onClick={() => open(i)}
+                className={`flex w-full items-center gap-3 rounded-xl p-2 text-left transition-colors ${
+                  isActive ? "bg-muted/70" : "hover:bg-muted/40"
                 }`}
+                aria-expanded={isActive}
               >
-                {p.emoji}
-                {/* marca de "ya visto" */}
-                {seen && !isActive && (
-                  <span className="absolute -right-1 -top-1 grid size-3.5 place-items-center rounded-full bg-ink text-[8px] font-bold text-background">
-                    ✓
+                <span
+                  className={`relative grid size-10 shrink-0 place-items-center rounded-full border text-lg transition-all ${
+                    isActive
+                      ? "border-ink bg-ink text-background"
+                      : seen
+                        ? "border-ink bg-surface text-ink"
+                        : "border-dashed border-line-strong bg-surface text-ink-faint"
+                  }`}
+                >
+                  {p.emoji}
+                  {seen && !isActive && (
+                    <span className="absolute -right-1 -top-1 grid size-4 place-items-center rounded-full bg-ink text-[9px] font-bold text-background">
+                      ✓
+                    </span>
+                  )}
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="font-mono text-[11px] text-ink-faint">
+                    {p.year}
                   </span>
+                  <span
+                    className={`block text-sm font-semibold ${
+                      isActive || seen ? "text-ink" : "text-ink-soft"
+                    }`}
+                  >
+                    {p.title}
+                  </span>
+                </span>
+                <span className="grid size-6 shrink-0 place-items-center text-lg text-ink-mute">
+                  {isActive ? "–" : "+"}
+                </span>
+              </button>
+              <AnimatePresence initial={false}>
+                {isActive && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.25 }}
+                    className="overflow-hidden"
+                  >
+                    <p className="pb-3 pl-[3.25rem] pr-2 pt-1 text-sm leading-relaxed text-ink-soft">
+                      {p.detail}
+                    </p>
+                  </motion.div>
                 )}
-              </span>
-              <span
-                className={`font-mono text-[9px] transition-colors sm:text-[11px] ${
-                  isActive ? "text-ink" : seen ? "text-ink-mute" : "text-ink-faint"
-                }`}
-              >
-                {p.year}
-              </span>
-            </button>
+              </AnimatePresence>
+            </li>
           );
         })}
+      </ul>
+
+      {/* ---------- ESCRITORIO: raíl horizontal + detalle ---------- */}
+      <div className="hidden sm:block">
+        <div className="relative flex items-center justify-between gap-1">
+          <div className="absolute left-0 right-0 top-[18px] h-px bg-line-strong" />
+          {POINTS.map((p, i) => {
+            const seen = visited.has(i);
+            const isActive = i === active;
+            return (
+              <button
+                key={p.year}
+                onClick={() => open(i)}
+                className="group relative z-10 flex flex-col items-center gap-1.5"
+                aria-label={`${p.year}: ${p.title}${seen ? " (visto)" : " (pendiente)"}`}
+              >
+                <span
+                  className={`relative grid size-9 place-items-center rounded-full border text-sm transition-all ${
+                    isActive
+                      ? "scale-110 border-ink bg-ink text-background"
+                      : seen
+                        ? "border-ink bg-surface text-ink"
+                        : "border-dashed border-line-strong bg-transparent text-ink-faint opacity-70 group-hover:opacity-100"
+                  }`}
+                >
+                  {p.emoji}
+                  {seen && !isActive && (
+                    <span className="absolute -right-1 -top-1 grid size-3.5 place-items-center rounded-full bg-ink text-[8px] font-bold text-background">
+                      ✓
+                    </span>
+                  )}
+                </span>
+                <span
+                  className={`font-mono text-[11px] transition-colors ${
+                    isActive ? "text-ink" : seen ? "text-ink-mute" : "text-ink-faint"
+                  }`}
+                >
+                  {p.year}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={active}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.25 }}
+            className="mt-5 rounded-xl bg-muted/60 p-4"
+          >
+            <div className="mb-1 flex items-baseline gap-2">
+              <span className="text-base font-semibold text-ink">
+                {POINTS[active].title}
+              </span>
+              <span className="font-mono text-xs text-ink-faint">
+                {POINTS[active].year}
+              </span>
+            </div>
+            <p className="text-sm leading-relaxed text-ink-soft">
+              {POINTS[active].detail}
+            </p>
+          </motion.div>
+        </AnimatePresence>
       </div>
 
-      {/* detalle */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={active}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.25 }}
-          className="mt-5 rounded-xl bg-muted/60 p-4"
-        >
-          <div className="mb-1 flex items-baseline gap-2">
-            <span className="text-base font-semibold text-ink">
-              {POINTS[active].title}
-            </span>
-            <span className="font-mono text-xs text-ink-faint">
-              {POINTS[active].year}
-            </span>
-          </div>
-          <p className="text-sm leading-relaxed text-ink-soft">
-            {POINTS[active].detail}
-          </p>
-        </motion.div>
-      </AnimatePresence>
-
-      {/* progreso obligatorio */}
+      {/* progreso obligatorio (compartido) */}
       <div className="mt-3 flex items-center justify-center gap-2 text-[11px]">
         {remaining > 0 ? (
           <span className="text-ink-mute">
