@@ -1,26 +1,199 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Modo oscuro por clase (.dark), estilo shadcn */
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================================
+   ClaseIA · Sistema de diseño — Monocromo (blanco y negro)
+   Colores por defecto = tema CLARO. El bloque .dark los invierte.
+   Todos los tokens son --color-* para que las utilidades de
+   Tailwind (text-ink, bg-surface, border-line…) siempre resuelvan.
+   ============================================================ */
+
+@theme {
+  --radius: 0.9rem;
+
+  /* Semánticos (shadcn) — CLARO */
+  --color-background: oklch(0.985 0 0);
+  --color-foreground: oklch(0.17 0 0);
+  --color-card: oklch(1 0 0);
+  --color-muted: oklch(0.955 0 0);
+  --color-muted-foreground: oklch(0.44 0 0);
+  --color-border: oklch(0.9 0 0);
+  --color-primary: oklch(0.17 0 0);
+  --color-primary-foreground: oklch(0.99 0 0);
+  --color-ring: oklch(0.62 0 0);
+
+  /* Alias propios — CLARO */
+  --color-void: oklch(0.985 0 0);
+  --color-surface: oklch(1 0 0);
+  --color-surface-2: oklch(0.955 0 0);
+  --color-elevated: oklch(0.955 0 0);
+  --color-line: oklch(0.9 0 0);
+  --color-line-strong: oklch(0.8 0 0);
+  --color-ink: oklch(0.17 0 0);
+  --color-ink-soft: oklch(0.34 0 0);
+  --color-ink-mute: oklch(0.46 0 0);
+  --color-ink-faint: oklch(0.6 0 0);
+
+  /* Acentos → colapsan a tinta (mantiene el B/N) */
+  --color-indigo: oklch(0.17 0 0);
+  --color-violet: oklch(0.17 0 0);
+  --color-cyan: oklch(0.17 0 0);
+  --color-fuchsia: oklch(0.17 0 0);
+  --color-emerald: oklch(0.17 0 0);
+  --color-amber: oklch(0.17 0 0);
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --animate-shimmer: shimmer 2.2s linear infinite;
+  --animate-float: float 7s ease-in-out infinite;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ------------------------------------------------------------
+   Tema OSCURO — invierte los mismos tokens
+   ------------------------------------------------------------ */
+.dark {
+  --color-background: oklch(0.145 0 0);
+  --color-foreground: oklch(0.97 0 0);
+  --color-card: oklch(0.2 0 0);
+  --color-muted: oklch(0.26 0 0);
+  --color-muted-foreground: oklch(0.7 0 0);
+  --color-border: oklch(1 0 0 / 14%);
+  --color-primary: oklch(0.97 0 0);
+  --color-primary-foreground: oklch(0.2 0 0);
+  --color-ring: oklch(0.55 0 0);
+
+  --color-void: oklch(0.145 0 0);
+  --color-surface: oklch(0.2 0 0);
+  --color-surface-2: oklch(0.26 0 0);
+  --color-elevated: oklch(0.26 0 0);
+  --color-line: oklch(1 0 0 / 14%);
+  --color-line-strong: oklch(1 0 0 / 24%);
+  --color-ink: oklch(0.97 0 0);
+  --color-ink-soft: oklch(0.86 0 0);
+  --color-ink-mute: oklch(0.7 0 0);
+  --color-ink-faint: oklch(0.52 0 0);
+
+  --color-indigo: oklch(0.97 0 0);
+  --color-violet: oklch(0.97 0 0);
+  --color-cyan: oklch(0.97 0 0);
+  --color-fuchsia: oklch(0.97 0 0);
+  --color-emerald: oklch(0.97 0 0);
+  --color-amber: oklch(0.97 0 0);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+
+* {
+  border-color: var(--color-border);
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-foreground);
+  color: var(--color-background);
+}
+
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--color-line-strong);
+  border-radius: 99px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+/* ============================================================
+   Utilidades
+   ============================================================ */
+
+/* Título con un gradiente monocromo sutil (tinta → tinta suave) */
+@utility text-gradient {
+  background-image: linear-gradient(
+    180deg,
+    var(--color-foreground),
+    color-mix(in oklab, var(--color-foreground) 60%, var(--color-muted-foreground))
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility glass {
+  background: color-mix(in oklab, var(--color-card) 78%, transparent);
+  backdrop-filter: blur(18px) saturate(120%);
+  -webkit-backdrop-filter: blur(18px) saturate(120%);
+  border: 1px solid var(--color-border);
+}
+
+@utility ring-glow {
+  box-shadow:
+    0 0 0 1px var(--color-border),
+    0 18px 50px -20px color-mix(in oklab, var(--color-foreground) 40%, transparent);
+}
+
+/* Texto "escribiendo…" con brillo que recorre */
+@utility shimmer-text {
+  background: linear-gradient(
+    90deg,
+    var(--color-muted-foreground) 0%,
+    var(--color-foreground) 20%,
+    var(--color-muted-foreground) 40%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: var(--animate-shimmer);
+}
+
+/* Desvanecido superior del scroll de mensajes */
+@utility scroll-fade {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 28px,
+    #000 calc(100% - 8px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 28px,
+    #000 calc(100% - 8px),
+    transparent 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

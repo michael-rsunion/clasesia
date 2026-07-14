@@ -1,0 +1,10 @@
+node_modules
+.next
+out
+.git
+.github
+.playwright-mcp
+npm-debug.log*
+.DS_Store
+*.pem
+README.md
