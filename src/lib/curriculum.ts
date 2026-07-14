@@ -105,6 +105,11 @@ export interface PredictorBeat extends Base {
   type: "predictor";
 }
 
+/** Viaje al servidor: el mensaje y el contexto viajan, me ejecuto, vuelve. */
+export interface ServerFlowBeat extends Base {
+  type: "serverflow";
+}
+
 export interface ContextBeat extends Base {
   type: "context";
 }
@@ -158,6 +163,7 @@ export type Beat =
   | PredictBeat
   | GenerateBeat
   | PredictorBeat
+  | ServerFlowBeat
   | ContextBeat
   | HallucinationBeat
   | CompareBeat
@@ -208,11 +214,13 @@ export const SCRIPT: Beat[] = [
   { module: "generar", type: "card", icon: "⚡", title: "Cómo se genera la respuesta", body: "No busco una respuesta guardada en ningún sitio. La **genero** token a token, eligiendo cada vez el más probable según todo lo anterior. Es predicción de texto llevada al extremo, y por eso a veces sueno muy segura aunque me equivoque." },
   { module: "generar", type: "continue" },
 
-  { module: "contexto", type: "say", text: "Algo clave para usarme bien, y que casi nadie entiende: yo no tengo memoria. Te sorprenderá, porque parece que te recuerdo dentro de la charla." },
-  { module: "contexto", type: "say", text: "El truco es este: cada vez que me escribes, quien te responde es una versión mía recién encendida. Antes de contestar, relee TODA la conversación desde el principio —lo que escribiste tú y lo que respondí yo— y con eso te responde. Al terminar, lo olvida." },
-  { module: "contexto", type: "say", text: "A todo ese texto que puedo releer de una vez lo llamamos contexto, y tiene un tamaño máximo, medido en tokens. Cuanto más largo se hace, más me cuesta acordarme bien de todo; y cuando la charla supera ese tamaño, lo más antiguo se cae para dejar sitio… y eso sí se me olvida. Envía tú los mensajes y míralo 👇" },
+  { module: "contexto", type: "say", text: "Para usarme bien, algo de cómo funciono por dentro — y casi nadie lo sabe. Yo no vivo en tu teléfono ni en tu ordenador: me ejecuto en un servidor, un ordenador muy potente en internet." },
+  { module: "contexto", type: "say", text: "Cada vez que me escribes, tu mensaje y toda la conversación viajan hasta ese servidor. Allí me ejecuto, leo todo ese texto de una vez, genero la respuesta y te la devuelvo. Y lo importante: al terminar, no guardo nada. Míralo 👇" },
+  { module: "contexto", type: "serverflow" },
+  { module: "contexto", type: "say", text: "Por eso, aunque parezca que te recuerdo, en realidad releo todo en cada mensaje. A ese texto que viaja y que leo de una vez lo llamamos contexto." },
+  { module: "contexto", type: "say", text: "Y tiene un límite de tamaño (se mide en tokens). Cuando la charla se hace larguísima, lo más viejo ya no cabe en el viaje y se queda fuera… y eso se me olvida. Ahora envía tú los mensajes y míralo 👇" },
   { module: "contexto", type: "context" },
-  { module: "contexto", type: "card", icon: "🪟", title: "La ventana de contexto", body: "El **contexto** es mi **memoria de trabajo**: todo el texto de la conversación que releo cada vez que me hablas. Se mide en tokens y cada modelo tiene el suyo (desde unos 200 mil hasta un millón de piezas). No es memoria permanente: si la charla supera ese tamaño, lo más antiguo desaparece y lo olvido, y **entre un chat y otro empiezo de cero**. Consejo: si un dato importa, **repítelo o ponlo cerca de tu pregunta**." },
+  { module: "contexto", type: "card", icon: "🪟", title: "La ventana de contexto", body: "El **contexto** es todo el texto de la conversación que **viaja al servidor** y que **releo** cada vez que me hablas (mi **memoria de trabajo** del momento). Se mide en tokens y cada modelo tiene el suyo (de unos 200 mil hasta un millón de piezas). No es memoria permanente: si la charla supera ese tamaño, lo más antiguo se queda fuera y lo olvido, y **entre un chat y otro empiezo de cero**. Consejo: si un dato importa, **repítelo o ponlo cerca de tu pregunta**." },
   { module: "contexto", type: "continue" },
 
   { module: "errores", type: "say", text: "Y ahora lo más importante que alguien puede decirte sobre la IA: a veces me equivoco con total seguridad. A ese error se le llama alucinación. Compruébalo tú mismo 👇" },

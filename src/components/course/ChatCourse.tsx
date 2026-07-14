@@ -25,6 +25,7 @@ import { Timeline } from "./widgets/Timeline";
 import { Predict } from "./widgets/Predict";
 import { Generate } from "./widgets/Generate";
 import { Predictor } from "./widgets/Predictor";
+import { ServerFlow } from "./widgets/ServerFlow";
 import { ContextWindow } from "./widgets/ContextWindow";
 import { Hallucination } from "./widgets/Hallucination";
 import { Compare } from "./widgets/Compare";
@@ -281,6 +282,8 @@ function BeatView({
       return <Widget><Generate text={beat.text} onDone={done} /></Widget>;
     case "predictor":
       return <Widget><Predictor onDone={done} /></Widget>;
+    case "serverflow":
+      return <Widget><ServerFlow onDone={done} /></Widget>;
     case "context":
       return <Widget><ContextWindow onDone={done} /></Widget>;
     case "hallucination":
@@ -536,6 +539,7 @@ function Composer({
         return "predictor";
       case "timeline":
         return "timeline";
+      case "serverflow":
       case "context":
       case "hallucination":
       case "connectors":
