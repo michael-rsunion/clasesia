@@ -236,7 +236,7 @@ export const SCRIPT: Beat[] = [
     bad: { prompt: "escríbeme algo para vender", answer: "Aquí tienes un texto para vender tu producto: “¡Cómpralo ya, es estupendo!”…" },
     good: { prompt: "Actúa como redactor publicitario. Escribe 3 anuncios breves para unas zapatillas de correr sostenibles, en tono cercano, de máximo 20 palabras cada uno y con una llamada a la acción.", answer: "1) Corre ligero y pisa suave. Zapatillas hechas con materiales reciclados. Descúbrelas.\n2) Cada kilómetro cuenta, cada par reutiliza 5 botellas. Únete al cambio." },
   },
-  { module: "prompts-buenos", type: "card", icon: "🎯", title: "La receta de un buen prompt", body: "Combina cuatro cosas: **rol** (qué papel quieres que adopte), **tarea** (qué necesitas exactamente), **contexto** (para quién y con qué datos) y **formato** (cómo lo quieres: lista, tabla, número de palabras). Si puedes, añade un ejemplo. Cuanto más claro seas, mejor será la respuesta." },
+  { module: "prompts-buenos", type: "card", icon: "🎯", title: "La receta de un buen prompt", body: "Combina cuatro cosas: **rol** (qué papel adopto), **tarea** (qué necesitas exactamente), **contexto** (para quién y con qué datos) y **formato** (cómo lo quieres: lista, tabla, nº de palabras). Y lo que más mejora el resultado: **dale un ejemplo** de lo que esperas. **Regla de oro:** si le pasaras ese prompt a un compañero sin contexto y se liara, yo también." },
   { module: "prompts-buenos", type: "continue" },
 
   { module: "multimodal", type: "say", text: "Aprovecho para presentarme mejor: me llamo Claude, y me crea una empresa llamada Anthropic. Soy la IA que vas a usar en tu día a día." },
