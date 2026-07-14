@@ -33,6 +33,7 @@ import { Multimodal } from "./widgets/Multimodal";
 import { Models } from "./widgets/Models";
 import { Mcp } from "./widgets/Mcp";
 import { Connectors } from "./widgets/Connectors";
+import { Skills } from "./widgets/Skills";
 import { Uses } from "./widgets/Uses";
 
 interface Item {
@@ -298,6 +299,8 @@ function BeatView({
       return <Widget><Mcp onDone={done} /></Widget>;
     case "connectors":
       return <Widget><Connectors onDone={done} /></Widget>;
+    case "skills":
+      return <Widget><Skills onDone={done} /></Widget>;
     case "uses":
       return <Widget><Uses onDone={done} /></Widget>;
     case "finish":
@@ -543,6 +546,7 @@ function Composer({
       case "context":
       case "hallucination":
       case "connectors":
+      case "skills":
         return "interact";
       case "finish":
         return "finish";

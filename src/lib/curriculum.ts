@@ -31,6 +31,7 @@ export const MODULES: Module[] = [
   { id: "multimodal", act: 4, title: "Ver, oír y crear", short: "Multimodal" },
   { id: "modelo", act: 4, title: "Qué Claude usar", short: "Modelos" },
   { id: "mcp", act: 4, title: "Herramientas (MCP)", short: "MCP" },
+  { id: "skills", act: 4, title: "Habilidades (Skills)", short: "Skills" },
   { id: "usos", act: 4, title: "Usos reales", short: "Usos" },
 ];
 
@@ -144,6 +145,11 @@ export interface ConnectorsBeat extends Base {
   type: "connectors";
 }
 
+/** Skills: habilidades empaquetadas que se cargan según la tarea. */
+export interface SkillsBeat extends Base {
+  type: "skills";
+}
+
 export interface UsesBeat extends Base {
   type: "uses";
 }
@@ -171,6 +177,7 @@ export type Beat =
   | ModelsBeat
   | McpBeat
   | ConnectorsBeat
+  | SkillsBeat
   | UsesBeat
   | FinishBeat;
 
@@ -257,11 +264,18 @@ export const SCRIPT: Beat[] = [
   { module: "mcp", type: "say", text: "¿Y cómo se le añaden esas herramientas a Claude? No hace falta programar. En Claude tienes una sección de conectores: activas el que necesites con un clic y, desde ese momento, puedo usarlo. Pruébalo tú 👇" },
   { module: "mcp", type: "connectors" },
   { module: "mcp", type: "card", icon: "🔌", title: "Qué es un MCP y cómo se conecta", body: "Piénsalo como un **puerto USB-C para la IA**: un enchufe estándar para conectarme a herramientas y datos. Ese estándar se llama **MCP** (*Model Context Protocol*) y lo creó **Anthropic**. En el día a día se usan como **conectores**: los oficiales —Calendario, Google Drive, Gmail, internet, bases de datos— se activan con un clic en **Ajustes → Conectores** de Claude; y si tu equipo tiene una herramienta propia, se añade pegando la dirección de su **servidor MCP**. Una vez conectado, dejo de solo describir las cosas y empiezo a hacerlas: leer un documento, mirar tu agenda o consultar tus datos." },
+  { module: "mcp", type: "say", text: "Y no son solo unos pocos: hoy muchísimas apps y servicios publican su propio MCP —herramientas de diseño, bases de datos, gestores de tareas, tiendas, lo que se te ocurra—. Así que me puedo conectar a casi cualquier cosa para hacer más de lo que yo sola podría." },
   { module: "mcp", type: "say", text: "Esto es lo que más está cambiando el trabajo ahora mismo: conectado a tus herramientas, ya no solo te aconsejo — actúo con tus datos reales, sin que tú copies y pegues." },
   { module: "mcp", type: "continue" },
 
+  { module: "skills", type: "say", text: "Hay una segunda forma de darme más poder, distinta de los MCP. Los MCP me conectan a herramientas; las skills me dan habilidades: me enseñan a hacer una tarea concreta a tu manera." },
+  { module: "skills", type: "say", text: "Una skill es un paquete de instrucciones y recursos —por ejemplo, cómo preparar tus informes, con qué estilo escribe tu marca o cómo rellenar cierto documento—. Lo bueno: la cargo yo sola cuando la tarea encaja, sin que me lo expliques cada vez. Míralo 👇" },
+  { module: "skills", type: "skills" },
+  { module: "skills", type: "card", icon: "🧩", title: "Qué es una skill", body: "Una **skill** (habilidad) es un paquete que me enseña a hacer algo concreto **a tu manera**: unas instrucciones y, si hace falta, plantillas o pequeños programas. Las **cargo automáticamente** cuando la tarea lo pide. Hay skills ya hechas (crear Excel, Word o PDF) y tu equipo puede crear las suyas. Diferencia rápida: **MCP = a qué me conecto** (herramientas y datos); **skills = qué sé hacer bien** (tareas a tu manera)." },
+  { module: "skills", type: "continue" },
+
   { module: "usos", type: "say", text: "Con todo esto, ¿para qué me conviene usarte de verdad? Aquí tienes ejemplos concretos que puedes aprovechar desde hoy." },
   { module: "usos", type: "uses" },
-  { module: "usos", type: "say", text: "Y hasta aquí el curso. Ahora sabes qué soy, de dónde salgo, cómo leo, cómo respondo, cuándo fallo, cómo pedirme las cosas, qué significa multimodal, qué modelo de Claude usar y qué es un MCP. Con eso ya entiendes la IA mejor que la mayoría de quienes la usan." },
+  { module: "usos", type: "say", text: "Y hasta aquí el curso. Ahora sabes qué soy, de dónde salgo, cómo leo, cómo respondo, cuándo fallo, cómo pedirme las cosas, qué es multimodal, qué modelo usar, qué es un MCP y qué es una skill. Con eso ya entiendes la IA mejor que la mayoría de quienes la usan." },
   { module: "usos", type: "finish" },
 ];
